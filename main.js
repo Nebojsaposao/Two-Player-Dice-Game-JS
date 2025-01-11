@@ -60,53 +60,90 @@
 
 
 // Sad se vracamo na zadata posle svih ovih objasnjenja
-function bacanjeKockice() {
-  let pitanjePotvrda = confirm("Da li želite da igrate igricu bacanje kockica za dva igrača?");
 
-  if (pitanjePotvrda) {
-    let player1 = prompt("Unesite ime prvog igrača");
-    let player2 = prompt("Unesite ime drugog igrača");
-    let brojRundi = 0;
+let player1 = {
+  firstName: "",
+  points: 0,
+  dice: 0
+};
 
-    // Validacija broja rundi
+let player2 = {
+  firstName: "",
+  points: 0,
+  dice: 0
+};
+
+let round = {
+  current: 0,
+  total: 0
+};
+
+let loop;
+
+
+function input() {
+  let confirmationQuestion = confirm("Da li želite da igrate igricu bacanje kockica za dva igrača?");
+
+  if (confirmationQuestion) {
     while (true) {
-      brojRundi = parseInt(prompt("Unesite broj rundi za igru:"));
-      if (!isNaN(brojRundi) && brojRundi > 0) {
-        break; // Izlaz iz petlje kada je unos validan
+      player1.firstName = prompt("Unesite ime prvog igrača:");
+      player2.firstName = prompt("Unesite ime drugog igrača:");
+
+      if (player1.firstName && player2.firstName && /^[A-Za-z\s]+$/.test(player1.firstName) && /^[A-Za-z\s]+$/.test(player2.firstName)) {
+        break;
+      }else{
+        alert("Morate uneti imena oba igrača koja sadrže samo slova i razmake!");
       }
-      alert("Niste unijeli validan unos. Potrebno je da unesete broj koji je u numerickom formatu i koji je veći od 0.");
-    }
+    };
 
-    let player1Points = 0;
-    let player2Points = 0;
+    while (true) {
+      round.total = parseInt(prompt("Unesite broj rundi za igru (1-10):"));
+      if (!isNaN(round.total) && round.total > 0 && round.total <= 10) {
+        break;
+      }else {
+        alert("Niste unijeli validan unos. Potrebno je da unesete broj između 1 i 10 .");
+      }
+    };
 
-    // Glavna logika igre
-    for (let i = 1; i <= brojRundi; i++) {
-      let player1Dice = Math.ceil(Math.random() * 6);
-      let player2Dice = Math.ceil(Math.random() * 6);
-      player1Points += player1Dice;
-      player2Points += player2Dice;
-
-      console.log(`%c**** ROUND ${i} ****`, "color: blue; font-size: 20px; font-weight: bold;");
-      console.log(`${player1} ${player1Dice}:${player2Dice} ${player2} (${player1Points}:${player2Points})`);
-    }
-
-    // Rezultat igre
-    if (player1Points > player2Points) {
-      console.log(`%c${player1} je pobjednik!!!`, "background-color:red; color:white; padding:5px;border-radius:10px;");
-    } else if (player1Points < player2Points) {
-      console.log(`%c${player2} je pobjednik!!!`, "background-color:red; color:white; padding:5px;border-radius:10px;");
-    } else {
-      console.log("%cIgra je izjednačena", "background-color:red; color:white; padding:5px;border-radius:10px;");
-    }
-
-    console.log("Mogućnost nove igre imate za 10 sekundi");
-    setTimeout(bacanjeKockice, 10000);
-
+    console.clear();
+    loop = setInterval(diceRoll, 2000);
   } else {
-    alert("Prvi igrač je otkazao igru.");
-  }
-}
+    alert("Prvi igrač je otkazao igru. Mogućnost nove igre imate za 5 sekundi.");
+    setTimeout(input, 5000);
+  };
+};
 
-// Pozivanje funkcije
-bacanjeKockice();
+
+function diceRoll() {
+  player1.dice = Math.ceil(Math.random() * 6);
+  player2.dice = Math.ceil(Math.random() * 6);
+  player1.points += player1.dice;
+  player2.points += player2.dice;
+
+  if (round.current === round.total) {
+    clearInterval(loop);
+    winner();
+  } else {
+    round.current++;
+    console.log(`%c**** ROUND ${round.current} ****`, "color: blue; font-size: 20px; font-weight: bold;");
+    console.log(`${player1.firstName} ${player1.dice}:${player2.dice} ${player2.firstName} (${player1.points}:${player2.points})`);
+  };
+};
+
+
+function winner() {
+
+  if (player1.points > player2.points) {
+    console.log(`%c${player1.firstName} je pobjednik!!!`, "background-color:red; color:white; padding:5px;border-radius:10px;");
+  } else if (player1.points < player2.points) {
+    console.log(`%c${player2.firstName} je pobjednik!!!`, "background-color:red; color:white; padding:5px;border-radius:10px;");
+  } else {
+    console.log("%cIgra je izjednačena", "background-color:red; color:white; padding:5px;border-radius:10px;");
+  };
+
+  console.log("Mogućnost nove igre imate za 10 sekundi.");
+  setTimeout(input, 10000);
+
+};
+
+input();
