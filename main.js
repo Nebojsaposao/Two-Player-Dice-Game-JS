@@ -64,7 +64,7 @@
 let player1 = {
   firstName: "",
   points: 0,
-  dice: 0
+  dice: 0,
 };
 
 let player2 = {
@@ -80,39 +80,39 @@ let round = {
 
 let loop;
 
+function inputPlayerNames() {
+  player1.firstName = prompt("Unesite ime prvog igrača:");
+  player2.firstName = prompt("Unesite ime drugog igrača:");
+
+  if (player1.firstName && player2.firstName && /^[A-Za-z\s]+$/.test(player1.firstName) && /^[A-Za-z\s]+$/.test(player2.firstName)) {
+    inputRounds();
+  } else {
+    alert("Morate uneti imena oba igrača koja sadrže samo slova i razmake!");
+    setTimeout(inputPlayerNames, 0); // Rekurzivni poziv sa odlaganjem
+  }
+}
+
+function inputRounds() {
+  round.total = parseInt(prompt("Unesite broj rundi za igru (1-10):"));
+  if (!isNaN(round.total) && round.total > 0 && round.total <= 10) {
+    console.clear();
+    loop = setInterval(diceRoll, 3000); // Svake 3 sekunde
+  } else {
+    alert("Niste unijeli validan unos. Potrebno je da unesete broj između 1 i 10.");
+    setTimeout(inputRounds, 0); // Rekurzivni poziv sa odlaganjem
+  }
+}
 
 function input() {
   let confirmationQuestion = confirm("Da li želite da igrate igricu bacanje kockica za dva igrača?");
 
   if (confirmationQuestion) {
-    while (true) {
-      player1.firstName = prompt("Unesite ime prvog igrača:");
-      player2.firstName = prompt("Unesite ime drugog igrača:");
-
-      if (player1.firstName && player2.firstName && /^[A-Za-z\s]+$/.test(player1.firstName) && /^[A-Za-z\s]+$/.test(player2.firstName)) {
-        break;
-      }else{
-        alert("Morate uneti imena oba igrača koja sadrže samo slova i razmake!");
-      }
-    };
-
-    while (true) {
-      round.total = parseInt(prompt("Unesite broj rundi za igru (1-10):"));
-      if (!isNaN(round.total) && round.total > 0 && round.total <= 10) {
-        break;
-      }else {
-        alert("Niste unijeli validan unos. Potrebno je da unesete broj između 1 i 10 .");
-      }
-    };
-
-    console.clear();
-    loop = setInterval(diceRoll, 2000);
+    inputPlayerNames();
   } else {
     alert("Prvi igrač je otkazao igru. Mogućnost nove igre imate za 5 sekundi.");
     setTimeout(input, 5000);
-  };
-};
-
+  }
+}
 
 function diceRoll() {
   player1.dice = Math.ceil(Math.random() * 6);
@@ -127,23 +127,20 @@ function diceRoll() {
     round.current++;
     console.log(`%c**** ROUND ${round.current} ****`, "color: blue; font-size: 20px; font-weight: bold;");
     console.log(`${player1.firstName} ${player1.dice}:${player2.dice} ${player2.firstName} (${player1.points}:${player2.points})`);
-  };
-};
-
+  }
+}
 
 function winner() {
-
   if (player1.points > player2.points) {
     console.log(`%c${player1.firstName} je pobjednik!!!`, "background-color:red; color:white; padding:5px;border-radius:10px;");
   } else if (player1.points < player2.points) {
     console.log(`%c${player2.firstName} je pobjednik!!!`, "background-color:red; color:white; padding:5px;border-radius:10px;");
   } else {
     console.log("%cIgra je izjednačena", "background-color:red; color:white; padding:5px;border-radius:10px;");
-  };
+  }
 
   console.log("Mogućnost nove igre imate za 10 sekundi.");
   setTimeout(input, 10000);
-
-};
+}
 
 input();
