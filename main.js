@@ -96,7 +96,7 @@ function inputRounds() {
   round.total = parseInt(prompt("Unesite broj rundi za igru (1-10):"));
   if (!isNaN(round.total) && round.total > 0 && round.total <= 10) {
     console.clear();
-    loop = setInterval(diceRoll, 3000); // Svake 3 sekunde
+    loop = setInterval(diceRoll, 1500); // Svake 3 sekunde
   } else {
     alert("Niste unijeli validan unos. Potrebno je da unesete broj između 1 i 10.");
     setTimeout(inputRounds, 0); // Rekurzivni poziv sa odlaganjem
@@ -139,8 +139,8 @@ function winner() {
     console.log("%cIgra je izjednačena", "background-color:red; color:white; padding:5px;border-radius:10px;");
   }
 
-  console.log("Mogućnost nove igre imate za 10 sekundi.");
-  setTimeout(input, 10000);
+  console.log("Mogućnost nove igre imate za 5 sekundi.");
+  setTimeout(input, 5000);
 }
 
 input();
