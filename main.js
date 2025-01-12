@@ -136,9 +136,9 @@ function diceRoll() {
 
 function winner() {
   if (player1.points > player2.points) {
-    console.log(`%c${player1.firstName} je pobjednik!!! i on/ona je bacio sledece kockice:${player1.diceThrows}`, "background-color:red; color:white; padding:5px;border-radius:10px;");
+    console.log(`%c${player1.firstName} je pobjednik!!! i on/ona je bacio/la sledece kockice:${player1.diceThrows}`, "background-color:red; color:white; padding:5px;border-radius:10px;");
   } else if (player1.points < player2.points) {
-    console.log(`%c${player2.firstName} je pobjednik!!! i on/ona je bacio sledece kockice:${player2.diceThrows}`, "background-color:red; color:white; padding:5px;border-radius:10px;");
+    console.log(`%c${player2.firstName} je pobjednik!!! i on/ona je bacio/la sledece kockice:${player2.diceThrows}`, "background-color:red; color:white; padding:5px;border-radius:10px;");
   } else {
     console.log("%cIgra je izjednačena", "background-color:red; color:white; padding:5px;border-radius:10px;");
   }
